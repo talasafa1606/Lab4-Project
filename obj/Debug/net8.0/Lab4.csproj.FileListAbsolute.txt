@@ -138,3 +138,6 @@ C:\Users\hp\Lab4\obj\Debug\net8.0\refint\Lab4.dll
 C:\Users\hp\Lab4\obj\Debug\net8.0\Lab4.pdb
 C:\Users\hp\Lab4\obj\Debug\net8.0\Lab4.genruntimeconfig.cache
 C:\Users\hp\Lab4\obj\Debug\net8.0\ref\Lab4.dll
+C:\Users\hp\Lab4\obj\Debug\net8.0\Lab4.sourcelink.json
+C:\Users\hp\Lab4\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\hp\Lab4\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

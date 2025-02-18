@@ -1,53 +1,19 @@
-using Lab4.Models;
-using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OData.ModelBuilder;
-using Microsoft.OData.Edm;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseNpgsql("Host=localhost;Database=postgres;Username=talasafa16;Password=mypassword"));
+// Add DbContext for PostgreSQL
+builder.Services.AddDbContext<MyUniversityDBContext>(options =>
+    options.UseNpgsql("Host=localhost;Database=uni;Username=talasafa16;Password=mypassword"));
 
-static IEdmModel GetEdmModel()
-{
-    var modelBuilder = new ODataConventionModelBuilder();
+// Register AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-    modelBuilder.EntitySet<Book>("Books");
-    modelBuilder.EntitySet<Author>("Authors");
-    modelBuilder.EntitySet<Borrower>("Borrowers");
-    modelBuilder.EntitySet<Loan>("Loans");
+// Add Authorization
+builder.Services.AddAuthorization();
 
-    modelBuilder.EntityType<Book>();
-    modelBuilder.EntityType<Author>();
-    modelBuilder.EntityType<Borrower>();
-    modelBuilder.EntityType<Loan>();
-
-    return modelBuilder.GetEdmModel();
-}
-
-
-builder.Services
-    .AddControllers()
-    .AddOData(options => options
-        .AddRouteComponents("api", GetEdmModel())
-        .Select()
-        .Filter()
-        .OrderBy()
-        .SetMaxTop(100)
-        .Count()
-        .Expand()
-    );
-
-builder.Services.Configure<ODataOptions>(options =>
-{
-    options.QuerySettings.EnableSelect = true;
-    options.QuerySettings.EnableFilter = true;
-    options.QuerySettings.EnableOrderBy = true;
-    options.QuerySettings.EnableExpand = true;
-    options.QuerySettings.EnableCount = true;
-    options.QuerySettings.MaxTop = 100;
-});
+// Add Controllers (required for API routes)
+builder.Services.AddControllers();
 
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -71,10 +37,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+
+// Map Controllers (handles API requests)
+app.MapControllers();
 
 app.Run();
-
